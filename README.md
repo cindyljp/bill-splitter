@@ -11,7 +11,7 @@ A simple, mobile-friendly bill splitter to share expenses, split items, and calc
 - 🧾 Customize service charge and SST percentages.
 - 🪙 Enter an optional rounding adjustment (blank by default; supports positive or negative amounts).
 - 🧮 Automatically update each person's share, including taxes and rounding.
-- 📋 Copy the bill summary to share with friends.
+- 📋 Copy a nicely formatted bill summary, or copy/download a receipt-style PNG image to share with friends.
 - 📱 Responsive layout for mobile and desktop browsers.
 
 ## How to use
