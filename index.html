@@ -57,7 +57,9 @@ function summaryImage(){
  rect(25,25,width-50,138,[24,24,0,0],'#176bd0');txt('BILL SPLIT',pad,87,34,'#ffffff',800);txt('A little easier, a lot fairer',pad,124,18,'#e5f1ff',400);
  // Vector sparkle avoids missing emoji glyphs in canvas exports.
  const sparkle=(cx,cy,r)=>{ctx.fillStyle='#ffe49c';ctx.beginPath();ctx.moveTo(cx,cy-r);ctx.quadraticCurveTo(cx+r*.18,cy-r*.18,cx+r,cy);ctx.quadraticCurveTo(cx+r*.18,cy+r*.18,cx,cy+r);ctx.quadraticCurveTo(cx-r*.18,cy+r*.18,cx-r,cy);ctx.quadraticCurveTo(cx-r*.18,cy-r*.18,cx,cy-r);ctx.fill()};
- sparkle(337,116,10);sparkle(355,103,5);
+ // Place sparkles immediately after the title, not beside the subtitle.
+ ctx.font='800 34px system-ui,-apple-system,sans-serif';const titleEnd=pad+ctx.measureText('BILL SPLIT').width;
+ sparkle(titleEnd+26,76,10);sparkle(titleEnd+44,64,5);
  txt('TOTAL BILL',pad,220,18,'#64748b',700);txt(money(total),width-pad,227,43,'#176bd0',800,'right');line(254);
  const rows=[['Subtotal',subtotal],['Service charge ('+nonneg($('service').value)+'%)',subtotal*service],['SST ('+nonneg($('sst').value)+'%)',subtotal*sst],['Rounding',rounding]];
  let y=297;for(const [label,value] of rows){txt(label,pad,y,20,'#52627a');txt(money(value),width-pad,y,21,'#17243b',650,'right');y+=43}
