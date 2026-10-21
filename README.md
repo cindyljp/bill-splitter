@@ -6,7 +6,7 @@ A simple, mobile-friendly bill splitter to share expenses, split items, and calc
 
 ## Features
 
-- 👥 Start with 4 people, then add, remove, or rename participants.
+- 👥 Choose how many people are splitting the bill when you start, then add, remove, or rename participants.
 - 🍽️ Add bill items with prices and quantities, and assign each item to one or multiple people.
 - 🧾 Customize service charge and SST percentages.
 - 🪙 Enter an optional rounding adjustment (blank by default; supports positive or negative amounts).
@@ -17,7 +17,7 @@ A simple, mobile-friendly bill splitter to share expenses, split items, and calc
 ## How to use
 
 1. Open the [Bill Splitter website](https://cindyljp.github.io/bill-splitter/).
-2. Rename or add people as needed.
+2. Enter the number of people splitting the bill, then rename or add people as needed.
 3. Enter bill items, prices, and quantities, and select who shares each item.
 4. Adjust service charge, SST, or the optional rounding amount.
 5. Review each person's total and copy the summary.
