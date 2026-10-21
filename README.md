@@ -1,24 +1,33 @@
 # Bill Splitter 💸
 
-A mobile-friendly bill splitting calculator that runs entirely in your browser, with no account or database required.
+A simple, mobile-friendly bill splitter to share expenses, split items, and calculate taxes fairly.
+
+🌐 **[Open Bill Splitter](https://cindyljp.github.io/bill-splitter/)**
 
 ## Features
 
-- Starts with four people; add or remove people and rename them.
-- Assign each bill item to one or multiple people.
-- Apply editable service charge and SST percentages.
-- Enter an optional rounding adjustment (blank by default).
-- Automatically calculate each person's amount and copy a bill summary.
-- Responsive design for phones and desktops.
+- 👥 Start with 4 people, then add, remove, or rename participants.
+- 🍽️ Add bill items with prices and quantities, and assign each item to one or multiple people.
+- 🧾 Customize service charge and SST percentages.
+- 🪙 Enter an optional rounding adjustment (blank by default; supports positive or negative amounts).
+- 🧮 Automatically update each person's share, including taxes and rounding.
+- 📋 Copy the bill summary to share with friends.
+- 📱 Responsive layout for mobile and desktop browsers.
 
-## Host with GitHub Pages
+## How to use
 
-1. Create a public repository named `bill-splitter` on GitHub.
-2. Upload `index.html` and `README.md` to the repository root on the `main` branch.
-3. Navigate to **Settings → Pages**.
-4. Under **Build and deployment**, select **Deploy from a branch**, choose **main** and **/(root)**, and save.
-5. Once deployed, open `https://cindyljp.github.io/bill-splitter/`.
+1. Open the [Bill Splitter website](https://cindyljp.github.io/bill-splitter/).
+2. Rename or add people as needed.
+3. Enter bill items, prices, and quantities, and select who shares each item.
+4. Adjust service charge, SST, or the optional rounding amount.
+5. Review each person's total and copy the summary.
+
+## Hosting
+
+This is a static website hosted with **GitHub Pages** from `index.html` on the `main` branch. No build process, account, or backend is required.
+
+To publish changes, update `index.html` and push to `main`. GitHub Pages will redeploy the site.
 
 ## Privacy
 
-The calculator operates locally in the browser. It does not require a backend or transmit entered bill data to a server through an app API.
+Calculations run in the browser. No login, database, or application API is required to calculate or split bills.
