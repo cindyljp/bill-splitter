@@ -46,7 +46,7 @@ function summaryImage(){
  const raw=people.map(p=>base[p.id]*(1+service+sst)+(assigned>0?rounding*base[p.id]/assigned:rounding/people.length));
  const cents=distribute(raw,Math.round(raw.reduce((a,b)=>a+b,0)*100));
  const total=subtotal*(1+service+sst)+rounding;
- const width=800,pad=55,personHeight=74,itemHeight=95,height=590+people.length*personHeight+items.length*itemHeight;
+ const width=800,pad=55,personHeight=74,itemHeight=95,height=560+people.length*personHeight+86+items.length*itemHeight+120;
  const canvas=document.createElement('canvas');canvas.width=width*2;canvas.height=height*2;
  const ctx=canvas.getContext('2d');ctx.scale(2,2);
  const rect=(x,y,w,h,r,fill)=>{ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()};
@@ -55,6 +55,9 @@ function summaryImage(){
  const line=(y)=>{ctx.strokeStyle='#e3eaf3';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(width-pad,y);ctx.stroke()};
  rect(0,0,width,height,0,'#f2f6fd');rect(25,25,width-50,height-50,24,'#ffffff');
  rect(25,25,width-50,138,[24,24,0,0],'#176bd0');txt('BILL SPLIT',pad,87,34,'#ffffff',800);txt('A little easier, a lot fairer',pad,124,18,'#e5f1ff',400);
+ // Vector sparkle avoids missing emoji glyphs in canvas exports.
+ const sparkle=(cx,cy,r)=>{ctx.fillStyle='#ffe49c';ctx.beginPath();ctx.moveTo(cx,cy-r);ctx.quadraticCurveTo(cx+r*.18,cy-r*.18,cx+r,cy);ctx.quadraticCurveTo(cx+r*.18,cy+r*.18,cx,cy+r);ctx.quadraticCurveTo(cx-r*.18,cy+r*.18,cx-r,cy);ctx.quadraticCurveTo(cx-r*.18,cy-r*.18,cx,cy-r);ctx.fill()};
+ sparkle(337,116,10);sparkle(355,103,5);
  txt('TOTAL BILL',pad,220,18,'#64748b',700);txt(money(total),width-pad,227,43,'#176bd0',800,'right');line(254);
  const rows=[['Subtotal',subtotal],['Service charge ('+nonneg($('service').value)+'%)',subtotal*service],['SST ('+nonneg($('sst').value)+'%)',subtotal*sst],['Rounding',rounding]];
  let y=297;for(const [label,value] of rows){txt(label,pad,y,20,'#52627a');txt(money(value),width-pad,y,21,'#17243b',650,'right');y+=43}
@@ -73,7 +76,8 @@ function summaryImage(){
   txt(truncate(shared,620,15,500),pad+15,y+52,15,'#64748b');
   y+=itemHeight;
  });
- txt('Made with Bill Splitter',width/2,height-48,16,'#8b98ac',500,'center');
+ // Position the footer after the last bill item, with ample bottom padding.
+ line(y+12);txt('Made with Bill Splitter',width/2,y+58,16,'#8b98ac',500,'center');
  return canvas;
 }
 $('copy-image').onclick=async()=>{
