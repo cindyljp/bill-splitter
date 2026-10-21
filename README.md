@@ -2,7 +2,7 @@
 
 A simple, mobile-friendly bill splitter to share expenses, split items, and calculate taxes fairly.
 
-🌐 **[Open Bill Splitter](https://cindyljp.github.io/bill-splitter/)**
+🌐 **<a href="https://cindyljp.github.io/bill-splitter/" target="_blank" rel="noopener noreferrer">Open Bill Splitter</a>**
 
 ## Features
 
@@ -16,7 +16,7 @@ A simple, mobile-friendly bill splitter to share expenses, split items, and calc
 
 ## How to use
 
-1. Open the [Bill Splitter website](https://cindyljp.github.io/bill-splitter/).
+1. Open the <a href="https://cindyljp.github.io/bill-splitter/" target="_blank" rel="noopener noreferrer">Bill Splitter website</a>.
 2. Enter the number of people splitting the bill, then rename or add people as needed.
 3. Enter bill items, prices, and quantities, and select who shares each item.
 4. Adjust service charge, SST, or the optional rounding amount.
