@@ -106,13 +106,7 @@ function render(){
  validate();
 }
 function validate(){
- const chosen=rows.filter(x=>x.selected),sum=chosen.reduce((a,x)=>a+(Number(x.qty)||0)*(Number(x.price)||0),0);
- const subtotal=expected.subtotal,grand=expected.total;
- const text=['Selected items: '+money(sum)];
- if(subtotal!=null){const delta=Math.abs(sum-subtotal);text.push('Receipt subtotal: '+money(subtotal));text.push(delta<=.03?'✓ Subtotal matches receipt':'⚠ Difference: '+money(delta)+' — review missing items or prices')}
- else if(grand!=null){const charges=(expected.service||0)+(expected.sst||0)+(expected.rounding||0);const delta=Math.abs(sum+charges-grand);text.push('Receipt total: '+money(grand));text.push(delta<=.05?'✓ Estimated total matches receipt':'⚠ Total differs by '+money(delta)+' (other charges or discounts may apply)')}
- else text.push('No reliable receipt total found; check the items manually.');
- $('receipt-validation').textContent=text.join(' · ');
+ const chosen=rows.filter(x=>x.selected);
  $('receipt-import').disabled=working||!chosen.length||chosen.some(x=>!x.name.trim()||!Number.isFinite(x.qty)||x.qty<=0||!Number.isInteger(x.qty)||!Number.isFinite(x.price)||x.price<0);
 }
 async function scanner(){
@@ -152,7 +146,7 @@ async function scan(){
    }catch(err){console.warn('Enhanced OCR fallback unavailable',err)}
   }
   recognized=best.text;ocrLines=best.lines;rows=parsed.items;expected=parsed.totals;
-  $('receipt-raw').value=recognized;$('receipt-review').hidden=false;render();
+  $('receipt-review').hidden=false;render();
   status(rows.length?'Found '+rows.length+' possible items. Review and correct them before importing.':'No clear items detected. Edit the OCR text or add rows manually.');
  }catch(err){console.error(err);status('Could not scan: '+(err.message||String(err))+'. Try a clearer photo or enter items manually.');$('receipt-review').hidden=false;render()}
  finally{setBusy(false);validate()}
@@ -177,7 +171,6 @@ $('receipt-remove-confirm').onclick=()=>{
  status('Receipt image removed. Existing bill items are unchanged.');
 };
 $('receipt-add-row').onclick=()=>{rows.push({name:'',qty:1,price:0,selected:true});render()};
-$('receipt-reparse').onclick=()=>{recognized=$('receipt-raw').value;rows=parseReceipt(recognized.split(/\r?\n/).map(text=>({text}))).items;expected=parseReceipt(recognized.split(/\r?\n/).map(text=>({text}))).totals;render();status('Updated items from edited text. Please review.')};
 $('receipt-import').onclick=()=>{
  const chosen=rows.filter(x=>x.selected);if(!chosen.length)return;
  const valid=chosen.every(x=>x.name.trim()&&Number.isInteger(x.qty)&&x.qty>0&&Number.isFinite(x.price)&&x.price>=0);
