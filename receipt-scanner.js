@@ -19,7 +19,7 @@ function parseReceipt(lines){
   if(!raw)continue;
   const value=amount(raw);
   if(value===null)continue;
-  if(/\b(?:grand\s*total|total\s*due|total\s*amount|net\s*total|amount\s*due|^total\b)/i.test(raw))totals.total=value;
+  if(/\b(?:grand\s*total|total\s*due|total\s*amount|net\s*total|amount\s*due)\b|^total\b/i.test(raw))totals.total=value;
   else if(/\bsub\s*total\b/i.test(raw))totals.subtotal=value;
   else if(/\b(?:SST|GST|service\s*tax)\b/i.test(raw))totals.sst=value;
   else if(/\bservice\s*charge\b/i.test(raw))totals.service=value;
@@ -47,8 +47,9 @@ function parseReceipt(lines){
  return {items:detected,totals};
 }
 function groupWords(data){
- const words=(data?.words||[]).filter(w=>w.text?.trim()).map(w=>({text:w.text.trim(),box:w.bbox||{},confidence:w.confidence}));
- if(!words.length)return (data?.lines||[]).map(l=>({text:l.text,confidence:l.confidence}));
+ const blockWords=(data?.blocks||[]).flatMap(b=>(b.paragraphs||[]).flatMap(p=>(p.lines||[]).flatMap(l=>l.words||[])));
+ const words=(data?.words?.length?data.words:blockWords).filter(w=>w.text?.trim()).map(w=>({text:w.text.trim(),box:w.bbox||{},confidence:w.confidence}));
+ if(!words.length)return (data?.lines?.length?data.lines:(data?.text||'').split(/\r?\n/).map(text=>({text}))).map(l=>({text:l.text,confidence:l.confidence}));
  const sorted=words.sort((a,b)=>(a.box.y0??0)-(b.box.y0??0)||(a.box.x0??0)-(b.box.x0??0));
  const grouped=[];
  for(const word of sorted){
