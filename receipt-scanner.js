@@ -175,6 +175,8 @@ $('receipt-paste').onclick=async()=>{
  }
 };
 const dropzone=$('receipt-dropzone');
+const isMobileDevice=()=>navigator.userAgentData?.mobile===true||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if(isMobileDevice())dropzone.classList.add('mobile-device');
 let dragDepth=0;
 const imageFromFiles=files=>Array.from(files||[]).find(f=>f.type?.startsWith('image/'));
 dropzone.addEventListener('dragenter',event=>{if(!event.dataTransfer?.types?.includes('Files'))return;event.preventDefault();dragDepth++;dropzone.classList.add('is-dragging')});
