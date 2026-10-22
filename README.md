@@ -1,59 +1,71 @@
 # Bill Splitter 💸
 
-A free, mobile-friendly bill splitter that helps friends divide shared meals fairly. Add items, choose who shared each item, and instantly see how much everyone owes—including service charge, SST, and rounding.
+A free, mobile-friendly bill-splitting calculator for shared meals and expenses. Enter items manually or scan a receipt, choose who shared each item, and see how much everyone owes—including service charge, SST, and rounding.
 
 🌐 **[Open Bill Splitter](https://cindyljp.github.io/bill-splitter/)**
 
 ## ✨ Features
 
-- 👥 **Flexible group size:** Start by entering the number of people (1–100), then add, remove, or rename participants.
-- ✏️ **Easy name editing:** Use the **×** button to clear a person or item name. If you leave the field blank, it restores the default name (for example, `Person 1` or `Item 1`) when you leave the field.
-- 📷 **Receipt scanning:** Take a receipt photo or upload an image, rotate it, and scan locally with Tesseract.js. Enhanced contrast, OCR line grouping, a second-pass fallback, and receipt-specific parsing help identify possible items.\n- 🔍 **Review and validate:** Edit or remove detected items, add missing rows, inspect the recognized text, and compare item totals with detected receipt totals before importing. Imported items are appended to the bill.\n- 🍽️ **Itemized bills:** Add or remove items, set each item's name, unit price (RM), and quantity.
-- 🤝 **Shared items:** Select one or more people to split an item's cost equally. Each person's item subtotal updates automatically.
-- 🧾 **Taxes and adjustments:** Set service charge and SST percentages, plus an optional positive or negative rounding adjustment.
-- 🧮 **Automatic calculations:** See the bill subtotal, charges, grand total, and each person's share. Calculations distribute amounts to cents and warn when items are unassigned.
-- 📋 **Copy summary:** Copy a formatted text breakdown with bill totals, each person's amount, and an itemized list showing quantities, unit prices, line totals, and who shared each item.
-- 🖼️ **Copy as image:** Create a styled PNG summary with a blue header, total bill, taxes, participant breakdown, and bill items. The image is copied to the clipboard when supported; otherwise, the browser downloads the PNG.
-- 📱 **Responsive design:** Works on desktop and mobile browsers.
-- 🔄 **Reset bill:** Clear the current bill and start again.
+- 👥 **Flexible group size:** Choose 1–100 participants when starting a bill, then add, remove, or rename people.
+- ✏️ **Clearable names:** Use the **×** button inside person and item name fields. If a field is left blank, its default name (such as `Person 1` or `Item 1`) returns when you leave the field.
+- 🍽️ **Manual item entry:** Add or remove items, set their names, unit prices in RM, and quantities.
+- 📷 **Receipt photo scanning:** Take a photo or upload a receipt image, rotate the preview, and scan with free, browser-based OCR.
+- 🔎 **Editable scan results:** Select, edit, add, or remove detected receipt items before importing them. Imported items are appended to the existing bill, and you can then choose who shared them.
+- 🖼️ **Receipt controls:** Clean, responsive action buttons and a custom confirmation dialog when removing a receipt photo. Removing the image discards unimported detections but preserves already imported bill items.
+- 🤝 **Shared items:** Assign an item to one or more participants to split its cost equally.
+- 🧾 **Taxes and adjustments:** Configure service charge and SST percentages and an optional positive or negative rounding adjustment.
+- 🧮 **Live calculations:** Automatically update the subtotal, charges, grand total, and each participant's share, with a warning for unassigned items.
+- 📋 **Copy summary:** Copy a formatted text breakdown including charges, each person's share, and itemized details with quantities, unit prices, line totals, and assigned people.
+- 🎨 **Copy as image:** Copy a receipt-style PNG containing the bill breakdown, participant totals, and itemized list. When clipboard image copying isn't supported, download the PNG instead.
+- 📱 **Responsive interface:** Designed for mobile and desktop browsers, with a custom browser-tab favicon.
+- 🔄 **Reset:** Start a fresh bill.
 
 ## 🚀 How to use
 
 1. Open **[Bill Splitter](https://cindyljp.github.io/bill-splitter/)**.
-2. Enter how many people are sharing the bill and select **Start splitting**.
-3. Rename participants if needed. Use **Add person** or the remove buttons to adjust the group.
-4. Enter each item's name, price, and quantity manually, **or** choose **Take photo** / **Upload receipt**, scan, review the detected rows, and select **Import selected**. Use **Add item** for more entries.
-5. Under **Shared by**, select everyone who shared each item.
-6. Adjust **Service charge (%)**, **SST (%)**, and **Rounding** if needed.
-7. Check the calculated totals and individual shares.
-8. Select **Copy summary** for formatted text or **Copy as image** to share a receipt-style image.
+2. Enter the number of people sharing the bill and select **Start splitting**.
+3. Add or rename participants as needed.
+4. Add items manually, **or** select **Take photo** / **Upload receipt** to choose a receipt image.
+5. For receipt scanning, rotate the image if needed and select **Scan receipt**. Review the detected items, correct their names, quantities, and unit prices, then select **Import selected**. You can add or remove detected rows.
+6. Under **Shared by**, select the participants who shared each bill item.
+7. Adjust **Service charge (%)**, **SST (%)**, and **Rounding** if applicable.
+8. Review the totals, then use **Copy summary** or **Copy as image** to share the result.
 
-> **Tip:** The **×** inside a name field clears its text; it does not remove the person or item. Leaving the field blank restores its default name.
+> **Tip:** The **×** inside a name field clears the text without deleting the person or item. Leaving the field blank restores its default name.
 
-## 📤 Sharing the result
+## 📷 Receipt scanning
 
-**Copy summary** includes:
-- Subtotal, service charge, SST, rounding, and grand total.
-- The amount owed by each participant.
-- Every bill item, including quantity, unit price, line total, and assigned participants.
+Receipt scanning uses **Tesseract.js** locally in the browser. It applies image rotation and contrast enhancement, uses OCR word positions to reconstruct lines, and attempts a second recognition pass for difficult images.
 
-**Copy as image** creates a PNG with the same essential breakdown in a shareable layout. On browsers that do not allow PNG clipboard writes, the image is downloaded instead. You can then share it from your downloads or photos.
+After scanning, you can review and edit detected item rows before importing. The scanner intentionally keeps the review screen simple: it does **not** display raw OCR text or a price comparison summary.
+
+If you select **Remove image**, a custom confirmation dialog lets you keep or remove the photo. Confirming removes the photo and any unimported detected rows; it does **not** delete items already added to your bill.
+
+**Accuracy note:** OCR and receipt parsing are best-effort. Receipts with faint printing, unusual layouts, or prices on separate lines can be misread. Always check the detected items and prices before importing. The app may still ask for confirmation if an imported selection differs from a subtotal detected in the receipt.
+
+## 📤 Sharing your bill
+
+**Copy summary** creates a readable text breakdown of the subtotal, service charge, SST, rounding, grand total, each person's amount, and every bill item with its quantity, unit price, line total, and sharing participants.
+
+**Copy as image** generates a styled PNG with a blue header, participant breakdown, itemized bill, and footer. The app tries to copy the PNG to your clipboard; if that is unsupported, it downloads the image for sharing.
 
 ## 🛠️ Technology and hosting
 
-- **Frontend:** Vanilla HTML, CSS, and JavaScript in `index.html`.
-- **Hosting:** GitHub Pages, using the `main` branch.
-- **Dependencies:** No framework, build step, backend, database, or API key is required. Receipt scanning loads the free Tesseract.js library and OCR language files from a CDN on first use.
+- **Frontend:** Vanilla HTML, CSS, and JavaScript.
+- **Files:** `index.html` (main app and styling), `receipt-scanner.js` (receipt OCR and review logic), `favicon.svg` (site icon).
+- **OCR:** Tesseract.js 5, loaded from a CDN when needed. OCR language files are downloaded on first use.
+- **Hosting:** GitHub Pages from the `main` branch.
+- **Requirements:** No framework, build process, application backend, database, account, or API key.
 
-To deploy an update, edit `index.html` and push the changes to `main`. GitHub Pages will publish the updated site.
+To publish changes, commit and push the updated files to `main`; GitHub Pages will deploy them.
 
 ## 🔒 Privacy
 
-Bill calculations, receipt OCR, and PNG generation happen in your browser. Receipt photos are not sent to an application server by the app. An internet connection is required to download the OCR library and language files when scanning for the first time. No account or application API key is required.
+Bill calculations, receipt recognition, and PNG generation run in the browser. The app does not upload receipt photos or bill details to an application API. An internet connection is needed to load the OCR library and language data from external hosting.
 
 ## 📌 Notes
 
-- Prices are displayed in **Malaysian Ringgit (RM)**.
-- New bills start with two editable items.
-- Receipt scanning is best-effort, not guaranteed accurate. Check all detected names, quantities, prices, taxes, and totals before importing.\n- OCR is currently powered by **Tesseract.js** with image preprocessing and fallback recognition; PaddleOCR is not bundled.
-- Image clipboard support varies by browser; PNG download is provided as a fallback.
+- Currency is **Malaysian Ringgit (RM)**.
+- A new bill begins with two editable items.
+- OCR is currently powered by **Tesseract.js**, not PaddleOCR or a cloud vision AI.
+- Image clipboard support varies by browser; downloading the PNG is the fallback.
