@@ -154,6 +154,21 @@ async function scan(){
 $('receipt-camera').onclick=()=>$('receipt-camera-file').click();
 $('receipt-upload').onclick=()=>$('receipt-upload-file').click();
 for(const id of ['receipt-camera-file','receipt-upload-file'])$(id).addEventListener('change',e=>{setFile(e.target.files?.[0]);e.target.value=''});
+const dropzone=$('receipt-dropzone');
+let dragDepth=0;
+const imageFromFiles=files=>Array.from(files||[]).find(f=>f.type?.startsWith('image/'));
+dropzone.addEventListener('dragenter',event=>{if(!event.dataTransfer?.types?.includes('Files'))return;event.preventDefault();dragDepth++;dropzone.classList.add('is-dragging')});
+dropzone.addEventListener('dragover',event=>{if(!event.dataTransfer?.types?.includes('Files'))return;event.preventDefault();event.dataTransfer.dropEffect='copy'});
+dropzone.addEventListener('dragleave',event=>{event.preventDefault();dragDepth=Math.max(0,dragDepth-1);if(!dragDepth)dropzone.classList.remove('is-dragging')});
+dropzone.addEventListener('drop',event=>{event.preventDefault();dragDepth=0;dropzone.classList.remove('is-dragging');if(working)return;const image=imageFromFiles(event.dataTransfer?.files);if(image)setFile(image);else status('Please drop an image file.')});
+document.addEventListener('paste',event=>{
+ if(working)return;
+ const target=event.target;
+ if(target instanceof HTMLElement&&(target.isContentEditable||['INPUT','TEXTAREA'].includes(target.tagName)))return;
+ const image=imageFromFiles(event.clipboardData?.files)||Array.from(event.clipboardData?.items||[]).find(item=>item.type.startsWith('image/'))?.getAsFile();
+ if(!image)return;
+ event.preventDefault();setFile(image);
+});
 $('receipt-rotate').onclick=()=>{rotation=(rotation+90)%360;$('receipt-preview').style.transform='rotate('+rotation+'deg)';status('Rotated preview. Scan again to apply the rotation.')};
 $('receipt-scan').onclick=scan;
 const removeDialog=$('receipt-remove-dialog');
