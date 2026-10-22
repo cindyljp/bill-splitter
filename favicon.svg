@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+<title>Bill Splitter</title>
+<rect width="64" height="64" rx="16" fill="#176bd0"/>
+<path d="M19 13h26v38l-6-4-7 4-7-4-6 4z" fill="#fff"/>
+<path d="M26 24h12M26 31h12" stroke="#176bd0" stroke-width="3.5" stroke-linecap="round"/>
+<path d="M28 40h8" stroke="#176bd0" stroke-width="3.5" stroke-linecap="round"/>
+<circle cx="48" cy="47" r="11" fill="#ffce64" stroke="#176bd0" stroke-width="2"/>
+<path d="M44 47h8M48 43v8" stroke="#176bd0" stroke-width="2.6" stroke-linecap="round"/>
+</svg>
