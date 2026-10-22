@@ -9,7 +9,7 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 - 👥 **Flexible group size:** Choose 1–100 participants when starting a bill, then add, remove, or rename people.
 - ✏️ **Clearable names:** Use the **×** button inside person and item name fields. If a field is left blank, its default name (such as `Person 1` or `Item 1`) returns when you leave the field.
 - 🍽️ **Manual item entry:** Add or remove items, set their names, unit prices in RM, and quantities.
-- 📷 **Receipt photo scanning:** Take a photo or upload a receipt image, rotate the preview, and scan with free, browser-based OCR.
+- 📷 **Receipt photo scanning:** Take a photo, upload, drag and drop, or paste a receipt image (Ctrl+V / ⌘V), rotate the preview, and scan with free, browser-based OCR.
 - 🔎 **Editable scan results:** Select, edit, add, or remove detected receipt items before importing them. Imported items are appended to the existing bill, and you can then choose who shared them.
 - 🖼️ **Receipt controls:** Clean, responsive action buttons and a custom confirmation dialog when removing a receipt photo. Removing the image discards unimported detections but preserves already imported bill items.
 - 🤝 **Shared items:** Assign an item to one or more participants to split its cost equally.
@@ -25,7 +25,7 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 1. Open **[Bill Splitter](https://cindyljp.github.io/bill-splitter/)**.
 2. Enter the number of people sharing the bill and select **Start splitting**.
 3. Add or rename participants as needed.
-4. Add items manually, **or** select **Take photo** / **Upload receipt** to choose a receipt image.
+4. Add items manually, **or** select **Take photo** / **Upload receipt**, drag and drop an image into the receipt area, or paste an image from your clipboard using **Ctrl+V** / **⌘V**.
 5. For receipt scanning, rotate the image if needed and select **Scan receipt**. Review the detected items, correct their names, quantities, and unit prices, then select **Import selected**. You can add or remove detected rows.
 6. Under **Shared by**, select the participants who shared each bill item.
 7. Adjust **Service charge (%)**, **SST (%)**, and **Rounding** if applicable.
@@ -35,7 +35,7 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 
 ## 📷 Receipt scanning
 
-Receipt scanning uses **Tesseract.js** locally in the browser. It applies image rotation and contrast enhancement, uses OCR word positions to reconstruct lines, and attempts a second recognition pass for difficult images.
+Receipt scanning accepts camera photos, image uploads, drag-and-drop files, and clipboard images (outside text-entry fields). It uses **Tesseract.js** locally in the browser. It applies image rotation and contrast enhancement, uses OCR word positions to reconstruct lines, and attempts a second recognition pass for difficult images.
 
 After scanning, you can review and edit detected item rows before importing. The scanner intentionally keeps the review screen simple: it does **not** display raw OCR text or a price comparison summary.
 
