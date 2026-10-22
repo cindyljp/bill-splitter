@@ -154,6 +154,26 @@ async function scan(){
 $('receipt-camera').onclick=()=>$('receipt-camera-file').click();
 $('receipt-upload').onclick=()=>$('receipt-upload-file').click();
 for(const id of ['receipt-camera-file','receipt-upload-file'])$(id).addEventListener('change',e=>{setFile(e.target.files?.[0]);e.target.value=''});
+$('receipt-paste').onclick=async()=>{
+ if(working)return;
+ if(!navigator.clipboard?.read){status('This browser does not support reading images from the clipboard. Use Upload receipt instead.');return}
+ try{
+  status('Checking clipboard for an image…');
+  const clipboardItems=await navigator.clipboard.read();
+  for(const item of clipboardItems){
+   const type=item.types.find(type=>type.startsWith('image/'));
+   if(!type)continue;
+   const blob=await item.getType(type);
+   const ext=type.split('/')[1]?.replace('jpeg','jpg')||'png';
+   setFile(new File([blob],'pasted-receipt.'+ext,{type}));
+   return;
+  }
+  status('No image found in your clipboard. Copy an image and try again, or use Upload receipt.');
+ }catch(error){
+  console.warn('Clipboard image paste unavailable',error);
+  status('Clipboard access was blocked or unavailable. Try allowing paste access, or use Upload receipt.');
+ }
+};
 const dropzone=$('receipt-dropzone');
 let dragDepth=0;
 const imageFromFiles=files=>Array.from(files||[]).find(f=>f.type?.startsWith('image/'));
