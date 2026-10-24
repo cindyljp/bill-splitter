@@ -26,7 +26,7 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 2. Enter the number of people sharing the bill and select **Start splitting**.
 3. Add or rename participants as needed.
 4. Add items manually, or provide a receipt image using **Take photo**, **Upload receipt**, drag-and-drop, or desktop keyboard paste (**Ctrl+V** / **⌘V**). On mobile, use the **Paste image** button if your browser supports clipboard image access. If pasting is unavailable, use **Upload receipt**.
-5. For receipt scanning, rotate the image if needed and select **Scan receipt**. Review the detected items, correct their names, quantities, and unit prices, then select **Import selected**. You can add or remove detected rows.
+5. For receipt scanning, rotate the image if needed and select **Scan receipt**. Review the detected items, correct their names, quantities, and unit prices, then select **Import selected**. You can add or remove detected rows. If the receipt clearly identifies a service charge or SST rate, importing also updates the corresponding percentage fields; otherwise their existing values remain unchanged.
 6. Under **Shared by**, select the participants who shared each bill item.
 7. Adjust **Service charge (%)**, **SST (%)**, and **Rounding** if applicable.
 8. Review the totals, then use **Copy summary** or **Copy as image** to share the result.
@@ -37,7 +37,7 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 
 Receipt scanning accepts camera photos, image uploads, drag-and-drop files, and clipboard images (outside text-entry fields). **Paste image** is shown on detected mobile devices and hidden on desktop, where keyboard paste remains available. Mobile detection uses browser device information and may vary on tablets or browsers using desktop mode. Clipboard image access depends on browser permissions and support; **Upload receipt** is the fallback. It uses **Tesseract.js** locally in the browser. It applies image rotation and contrast enhancement, uses OCR word positions to reconstruct lines, and attempts a second recognition pass for difficult images.
 
-After scanning, you can review and edit detected item rows before importing. The scanner intentionally keeps the review screen simple: it does **not** display raw OCR text or a price comparison summary.
+After scanning, you can review and edit detected item rows before importing. The scanner also attempts to detect labeled service charge and SST percentages (or infer them from a labeled charge amount and subtotal). Only detected rates are applied when importing; check these fields against your receipt. The scanner intentionally keeps the review screen simple: it does **not** display raw OCR text or a price comparison summary.
 
 If you select **Remove image**, a custom confirmation dialog lets you keep or remove the photo. Confirming removes the photo and any unimported detected rows; it does **not** delete items already added to your bill.
 
