@@ -12,7 +12,7 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 - 📷 **Receipt photo scanning:** Take a photo, upload an image, drag and drop a receipt, or paste an image using Ctrl+V / ⌘V on desktop. On mobile devices, a dedicated **Paste image** button appears for supported browsers. Rotate the preview and scan using free, browser-based OCR.
 - 🔎 **Editable scan results:** Select, edit, add, or remove detected receipt items before importing them. Imported items are appended to the existing bill, and you can then choose who shared them.
 - 🖼️ **Receipt controls:** Clean, responsive action buttons and a custom confirmation dialog when removing a receipt photo. Removing the image discards unimported detections but preserves already imported bill items.
-- 🤝 **Shared items:** Assign an item to one or more participants to split its cost equally.
+- 🤝 **Shared items:** Assign an item to one or more participants to split its cost equally.\n- 💸 **Who pays whom:** Select **Paid first by** on each item to record who covered the cost. A settlement section calculates reimbursements between participants, including proportional service charge, SST, and rounding. The text summary includes the payment instructions when all priced items have a payer and at least one person sharing them.
 - 🧾 **Taxes and adjustments:** Configure service charge and SST percentages and an optional positive or negative rounding adjustment.
 - 🧮 **Live calculations:** Automatically update the subtotal, charges, grand total, and each participant's share, with a warning for unassigned items.
 - 📋 **Copy summary:** Copy a formatted text breakdown including charges, each person's share, and itemized details with quantities, unit prices, line totals, and assigned people.
@@ -27,9 +27,9 @@ A free, mobile-friendly bill-splitting calculator for shared meals and expenses.
 3. Add or rename participants as needed.
 4. Add items manually, or provide a receipt image using **Take photo**, **Upload receipt**, drag-and-drop, or desktop keyboard paste (**Ctrl+V** / **⌘V**). On mobile, use the **Paste image** button if your browser supports clipboard image access. If pasting is unavailable, use **Upload receipt**.
 5. For receipt scanning, rotate the image if needed and select **Scan receipt**. Review the detected items, correct their names, quantities, and unit prices, then select **Import selected**. You can add or remove detected rows. If the receipt clearly identifies a service charge or SST rate, importing also updates the corresponding percentage fields; otherwise their existing values remain unchanged.
-6. Under **Shared by**, select the participants who shared each bill item.
+6. Under **Shared by**, select the participants who shared each bill item. Choose **Paid first by** to indicate who originally paid for that item.
 7. Adjust **Service charge (%)**, **SST (%)**, and **Rounding** if applicable.
-8. Review the totals, then use **Copy summary** or **Copy as image** to share the result.
+8. Review the totals and the **Who pays whom?** section at the bottom to see who should reimburse whom. Use **Copy summary** or **Copy as image** to share the bill breakdown. The text summary includes settlements; image export retains its existing bill breakdown layout.
 
 > **Tip:** The **×** inside a name field clears the text without deleting the person or item. Leaving the field blank restores its default name.
 
@@ -45,7 +45,7 @@ If you select **Remove image**, a custom confirmation dialog lets you keep or re
 
 ## 📤 Sharing your bill
 
-**Copy summary** creates a readable text breakdown of the subtotal, service charge, SST, rounding, grand total, each person's amount, and every bill item with its quantity, unit price, line total, and sharing participants.
+**Copy summary** creates a readable text breakdown of the subtotal, service charge, SST, rounding, grand total, each person's amount, and every bill item with its quantity, unit price, line total, and sharing participants. When payer information is complete, it also lists who should pay whom.
 
 **Copy as image** generates a styled PNG with a blue header, participant breakdown, itemized bill, and footer. The app tries to copy the PNG to your clipboard; if that is unsupported, it downloads the image for sharing.
 
