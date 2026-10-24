@@ -179,13 +179,13 @@ function summaryImage(){
   let di=0,ci=0;
   while(di<debtors.length&&ci<creditors.length){
    const amount=Math.min(debtors[di].amount,creditors[ci].amount);
-   if(amount>0)transfers.push({from:people.find(p=>p.id===debtors[di].id)?.name||'Unnamed',to:people.find(p=>p.id===creditors[ci].id)?.name||'Unnamed',amount});
+   if(amount>0)transfers.push({from:people.find(p=>p.id===debtors[di].id)?.name||'Unnamed',to:people.find(p=>p.id===creditors[ci].id)?.name||'Unnamed',fromId:debtors[di].id,toId:creditors[ci].id,amount});
    debtors[di].amount-=amount;creditors[ci].amount-=amount;
    if(!debtors[di].amount)di++;if(!creditors[ci].amount)ci++;
   }
  }
  const width=800,pad=55,personHeight=74,itemHeight=95;
- const settlementHeight=settlementReady?106+Math.max(1,transfers.length)*64:0;
+ const settlementHeight=settlementReady?110+Math.max(1,transfers.length)*86:0;
  const height=560+people.length*personHeight+86+items.length*itemHeight+120+settlementHeight;
  const canvas=document.createElement('canvas');canvas.width=width*2;canvas.height=height*2;
  const ctx=canvas.getContext('2d');ctx.scale(2,2);
@@ -221,12 +221,26 @@ function summaryImage(){
  // Include the same settlement transfers as Copy summary.
  if(settlementReady){
   y+=15;line(y);txt('WHO PAYS WHOM?',pad,y+42,18,'#64748b',750);y+=85;
-  if(!transfers.length){rect(pad,y-25,width-2*pad,51,12,'#f7f9fd');txt('All settled! Nobody owes anyone.',pad+15,y+6,19,'#52627a',600);y+=64}
-  else transfers.forEach(t=>{
-   rect(pad,y-25,width-2*pad,52,12,'#f7f9fd');
-   txt(truncate(t.from+'  →  '+t.to,460,20,700),pad+15,y+7,20,'#17243b',700);
-   txt(money(t.amount/100),width-pad-15,y+7,21,'#176bd0',800,'right');
-   y+=64;
+  if(!transfers.length){rect(pad,y-25,width-2*pad,60,13,'#edf9ef');txt('✓  All settled! Nobody owes anyone.',pad+17,y+12,19,'#387b48',700);y+=86}
+  else transfers.forEach((t,i)=>{
+   const bg=['#eff6ff','#f1f9ed','#fff5ed','#f6f0ff'][i%4];
+   const accent=['#176bd0','#387b48','#ac6430','#7950aa'][i%4];
+   const fromIndex=people.findIndex(p=>p.id===t.fromId),toIndex=people.findIndex(p=>p.id===t.toId);
+   const senderColor=palette[(fromIndex<0?0:fromIndex)%palette.length],receiverColor=palette[(toIndex<0?0:toIndex)%palette.length];
+   rect(pad,y-26,width-2*pad,72,14,bg);
+   // Numbered avatars match the participant colors used above.
+   rect(pad+14,y-12,29,29,15,senderColor);
+   txt(fromIndex+1,pad+28.5,y+8,14,'#ffffff',800,'center');
+   rect(pad+205,y-12,29,29,15,receiverColor);
+   txt(toIndex+1,pad+219.5,y+8,14,'#ffffff',800,'center');
+   txt(truncate(t.from,140,17,700),pad+51,y+8,17,'#24334d',700);
+   // Draw the arrow as a vector so it works even without emoji fonts.
+   ctx.strokeStyle=accent;ctx.lineWidth=3;ctx.lineCap='round';
+   ctx.beginPath();ctx.moveTo(pad+166,y+2);ctx.lineTo(pad+192,y+2);ctx.moveTo(pad+184,y-5);ctx.lineTo(pad+192,y+2);ctx.lineTo(pad+184,y+9);ctx.stroke();
+   txt(truncate(t.to,135,17,700),pad+242,y+8,17,'#24334d',700);
+   txt('TO PAY',width-pad-15,y-5,11,'#718099',750,'right');
+   txt(money(t.amount/100),width-pad-15,y+22,21,accent,800,'right');
+   y+=86;
   });
  }
  // Keep the footer below the settlement section with comfortable padding.
