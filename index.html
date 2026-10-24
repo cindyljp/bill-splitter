@@ -115,7 +115,28 @@ function summaryImage(){
  const raw=people.map(p=>base[p.id]*(1+service+sst)+(assigned>0?rounding*base[p.id]/assigned:rounding/people.length));
  const cents=distribute(raw,Math.round(raw.reduce((a,b)=>a+b,0)*100));
  const total=subtotal*(1+service+sst)+rounding;
- const width=800,pad=55,personHeight=74,itemHeight=95,height=560+people.length*personHeight+86+items.length*itemHeight+120;
+ // Use the same payer balances and cent rounding as the text settlement summary.
+ const priced=items.filter(it=>nonneg(it.price)*nonneg(it.qty)>0);
+ const settlementReady=priced.length>0&&priced.every(it=>people.some(p=>p.id===it.paidBy)&&it.assigned.some(id=>people.some(p=>p.id===id)));
+ const transfers=[];
+ if(settlementReady){
+  const payerTotals=Object.fromEntries(people.map(p=>[p.id,0]));
+  const weighted=priced.map(it=>{const cost=nonneg(it.price)*nonneg(it.qty);return cost*(1+service+sst)+(subtotal>0?rounding*cost/subtotal:0)});
+  const paidCents=distribute(weighted,Math.round(total*100));
+  priced.forEach((it,i)=>payerTotals[it.paidBy]+=paidCents[i]);
+  const debtors=[],creditors=[];
+  people.forEach((p,i)=>{const balance=payerTotals[p.id]-cents[i];if(balance<0)debtors.push({id:p.id,amount:-balance});else if(balance>0)creditors.push({id:p.id,amount:balance})});
+  let di=0,ci=0;
+  while(di<debtors.length&&ci<creditors.length){
+   const amount=Math.min(debtors[di].amount,creditors[ci].amount);
+   if(amount>0)transfers.push({from:people.find(p=>p.id===debtors[di].id)?.name||'Unnamed',to:people.find(p=>p.id===creditors[ci].id)?.name||'Unnamed',amount});
+   debtors[di].amount-=amount;creditors[ci].amount-=amount;
+   if(!debtors[di].amount)di++;if(!creditors[ci].amount)ci++;
+  }
+ }
+ const width=800,pad=55,personHeight=74,itemHeight=95;
+ const settlementHeight=settlementReady?106+Math.max(1,transfers.length)*64:0;
+ const height=560+people.length*personHeight+86+items.length*itemHeight+120+settlementHeight;
  const canvas=document.createElement('canvas');canvas.width=width*2;canvas.height=height*2;
  const ctx=canvas.getContext('2d');ctx.scale(2,2);
  const rect=(x,y,w,h,r,fill)=>{ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()};
@@ -147,7 +168,18 @@ function summaryImage(){
   txt(truncate(shared,620,15,500),pad+15,y+52,15,'#64748b');
   y+=itemHeight;
  });
- // Position the footer after the last bill item, with ample bottom padding.
+ // Include the same settlement transfers as Copy summary.
+ if(settlementReady){
+  y+=15;line(y);txt('WHO PAYS WHOM?',pad,y+42,18,'#64748b',750);y+=85;
+  if(!transfers.length){rect(pad,y-25,width-2*pad,51,12,'#f7f9fd');txt('All settled! Nobody owes anyone.',pad+15,y+6,19,'#52627a',600);y+=64}
+  else transfers.forEach(t=>{
+   rect(pad,y-25,width-2*pad,52,12,'#f7f9fd');
+   txt(truncate(t.from+'  →  '+t.to,460,20,700),pad+15,y+7,20,'#17243b',700);
+   txt(money(t.amount/100),width-pad-15,y+7,21,'#176bd0',800,'right');
+   y+=64;
+  });
+ }
+ // Keep the footer below the settlement section with comfortable padding.
  line(y+12);txt('Made with Bill Splitter',width/2,y+58,16,'#8b98ac',500,'center');
  return canvas;
 }
