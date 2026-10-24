@@ -18,6 +18,13 @@ function parseReceipt(lines){
   const raw=line.text.trim().replace(/\s+/g,' ');
   if(!raw)continue;
   const value=amount(raw);
+  // Extract printed tax percentages separately from monetary values.
+  const rateMatch=raw.match(/(\d{1,2}(?:\.\d{1,2})?)\s*%/);
+  const rate=rateMatch?Number(rateMatch[1]):null;
+  if(rate!==null&&rate>=0&&rate<=30){
+   if(/\bservice\s*(?:charge|chg|chrg|fee)\b|\bsvc\s*(?:chg|charge)\b|\bs\.?c\.?\b/i.test(raw))totals.serviceRate=rate;
+   else if(/\b(?:SST|GST|service\s*tax|sales\s*(?:and\s*)?service\s*tax)\b/i.test(raw))totals.sstRate=rate;
+  }
   if(value===null)continue;
   if(/\b(?:grand\s*total|total\s*due|total\s*amount|net\s*total|amount\s*due)\b|^total\b/i.test(raw))totals.total=value;
   else if(/\bsub\s*total\b/i.test(raw))totals.subtotal=value;
@@ -43,6 +50,14 @@ function parseReceipt(lines){
   name=name.replace(/^[#*\-\s]+/,'').replace(/[.\-\s]+$/,'').trim();
   if(name.length<2)continue;
   detected.push({name,qty,price:Number(unit.toFixed(2)),selected:true,confidence:line.confidence??null});
+ }
+ // Derive rates only from explicitly labeled charges and a reliable receipt subtotal.
+ for(const [key,rateKey] of [['service','serviceRate'],['sst','sstRate']]){
+  if(totals[rateKey]===undefined&&Number.isFinite(totals.subtotal)&&totals.subtotal>0&&Number.isFinite(totals[key])){
+   const inferred=totals[key]/totals.subtotal*100;
+   const rounded=Math.round(inferred*2)/2;
+   if(inferred>=0&&inferred<=30&&Math.abs(totals.subtotal*rounded/100-totals[key])<=0.03)totals[rateKey]=rounded;
+  }
  }
  return {items:detected,totals};
 }
@@ -214,7 +229,7 @@ $('receipt-import').onclick=()=>{
  if(!valid){status('Check item names, quantities, and prices before importing.');return}
  const unassigned=Object.values(expected).length>0&&expected.subtotal!=null&&Math.abs(chosen.reduce((n,x)=>n+x.qty*x.price,0)-expected.subtotal)>.03;
  if(unassigned&&!confirm('The selected item subtotal does not match the receipt subtotal. Import anyway?'))return;
- window.dispatchEvent(new CustomEvent('bill-splitter:receipt-import',{detail:{items:chosen.map(x=>({name:x.name.trim(),qty:x.qty,price:x.price}))}}));
+ window.dispatchEvent(new CustomEvent('bill-splitter:receipt-import',{detail:{items:chosen.map(x=>({name:x.name.trim(),qty:x.qty,price:x.price})),rates:{service:expected.serviceRate,sst:expected.sstRate}}}));
  $('receipt-review').hidden=true;rows=[];status('Items imported. Select who shared each item.');
 };
 })();
